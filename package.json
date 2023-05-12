@@ -1,0 +1,36 @@
+{
+  "name": "langchain-showcase",
+  "version": "1.0.0",
+  "description": "Showcase Langchain features",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "start:verbose": "VERBOSE=true ts-node src/index.ts",
+    "watch": "tsnd --respawn src/index.ts",
+    "watch:verbose": "VERBOSE=true tsnd --respawn src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuckyLuky/langchain-showcase.git"
+  },
+  "keywords": [
+    "langchain",
+    "ai",
+    "openai"
+  ],
+  "author": "Lukas Havlicek <8luckyluky8@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LuckyLuky/langchain-showcase/issues"
+  },
+  "homepage": "https://github.com/LuckyLuky/langchain-showcase#readme",
+  "dependencies": {
+    "langchain": "^0.0.75",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0"
+  }
+}
