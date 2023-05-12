@@ -25,10 +25,12 @@
   },
   "homepage": "https://github.com/LuckyLuky/langchain-showcase#readme",
   "dependencies": {
+    "inquirer": "^8.2.4",
     "langchain": "^0.0.75",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
+    "@types/inquirer": "^8.2.4",
     "dotenv": "^16.0.3",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"
