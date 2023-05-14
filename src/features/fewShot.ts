@@ -9,6 +9,7 @@ import { BaseLanguageModel } from "langchain/base_language";
 import { formatResponse } from "../utils/formatResponse";
 import { initialSystemMessagePrompt } from "../prompts/system/initialPrompt";
 import { getUserInput } from "../prompts/user/input";
+import { setLoading } from "../utils/loadingAnimation";
 
 export const run = async (model: BaseLanguageModel) => {
   const verbose = isVerboseMode();
@@ -40,10 +41,14 @@ export const run = async (model: BaseLanguageModel) => {
 
   const input = getUserInput();
 
+  const cancelLoading = setLoading();
+
   const [formattedPrompt, response] = await Promise.all([
     prompt.formatMessages({ input }),
     chain.run(input),
   ]);
+
+  cancelLoading();
 
   console.log(
     formatResponse({

@@ -6,5 +6,5 @@ export const create = () => {
   const verbose = isVerboseMode();
   const temperature = getTemperature();
 
-  return new ChatOpenAI({ temperature: 0, verbose });
+  return new ChatOpenAI({ temperature, verbose, modelName: "gpt-3.5-turbo" });
 };

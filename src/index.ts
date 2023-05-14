@@ -19,7 +19,7 @@ inquirer
         const { feature } = answer;
 
         if (Object.keys(llmFeatures).includes(feature)) {
-          return Object.keys(llmModels);
+          return Object.keys(models);
         }
         if (Object.keys(chatFeatures).includes(feature)) {
           return Object.keys(chatModels);
