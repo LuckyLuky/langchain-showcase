@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { chatFeatures, features, llmFeatures } from "./features";
+import { agentFeatures, chatFeatures, features, llmFeatures } from "./features";
 import { chatModels, llmModels, models } from "./models";
 import { log } from "./utils/verboseMode";
 
@@ -15,8 +15,8 @@ inquirer
       name: "chatModel",
       type: "list",
       message: "Select chat model",
-      choices: (answer) => {
-        const { feature } = answer;
+      choices: (answers) => {
+        const { feature } = answers;
 
         if (Object.keys(llmFeatures).includes(feature)) {
           return Object.keys(models);
@@ -28,11 +28,27 @@ inquirer
         throw new Error("Invalid input");
       },
     },
+    {
+      name: "input",
+      type: "input",
+      message: "Add prompt",
+      when: (answers) => {
+        const { feature } = answers;
+
+        if (Object.keys(agentFeatures).includes(feature)) {
+          return false;
+        }
+
+        return !process.env.USER_PROMPT;
+      },
+    },
   ])
-  .then(({ feature, chatModel }) => {
+  .then(({ feature, chatModel, input }) => {
     if (!features[feature] || !models[chatModel]) {
       throw new Error("Invalid input");
     }
+
+    process.env.USER_PROMPT = input;
 
     log(`Running ${feature} with ${chatModel}`);
 

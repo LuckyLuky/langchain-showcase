@@ -7,10 +7,14 @@ export const llmFeatures = {
   callLLM: runCallLLM,
 };
 
-export const chatFeatures = {
-  fewShot: runFewShot,
+export const agentFeatures = {
   planAndExecuteAgent: runPlanAndExecuteAgent,
   chatModelActionAgent: runChatModelActionAgent,
+};
+
+export const chatFeatures = {
+  fewShot: runFewShot,
+  ...agentFeatures,
 };
 
 export const features = {
