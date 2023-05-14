@@ -1,0 +1,30 @@
+diff --git a/node_modules/langchain/dist/llms/hf.cjs b/node_modules/langchain/dist/llms/hf.cjs
+index f6f96ce..9b66680 100644
+--- a/node_modules/langchain/dist/llms/hf.cjs
++++ b/node_modules/langchain/dist/llms/hf.cjs
+@@ -73,8 +73,8 @@ class HuggingFaceInference extends base_js_1.LLM {
+         const res = await this.caller.callWithOptions({ signal: options.signal }, hf.textGeneration.bind(hf), {
+             model: this.model,
+             parameters: {
+-                // make it behave similar to openai, returning only the generated text
+-                return_full_text: false,
++                // Hotfix so messages wouldn't get truncated
++                // return_full_text: false,
+                 temperature: this.temperature,
+                 max_new_tokens: this.maxTokens,
+                 top_p: this.topP,
+diff --git a/node_modules/langchain/dist/llms/hf.js b/node_modules/langchain/dist/llms/hf.js
+index 8ebce5d..c4a98e1 100644
+--- a/node_modules/langchain/dist/llms/hf.js
++++ b/node_modules/langchain/dist/llms/hf.js
+@@ -70,8 +70,8 @@ export class HuggingFaceInference extends LLM {
+         const res = await this.caller.callWithOptions({ signal: options.signal }, hf.textGeneration.bind(hf), {
+             model: this.model,
+             parameters: {
+-                // make it behave similar to openai, returning only the generated text
+-                return_full_text: false,
++                // Hotfix so messages wouldn't get truncated
++                // return_full_text: false,
+                 temperature: this.temperature,
+                 max_new_tokens: this.maxTokens,
+                 top_p: this.topP,

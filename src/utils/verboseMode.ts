@@ -1,5 +1,4 @@
 import { config } from "dotenv";
-import { BaseChatModel } from "langchain/chat_models";
 
 config();
 const verboseMode = Boolean(
@@ -17,11 +16,3 @@ export const log = (...args: any[]) => {
     console.log(...args);
   }
 };
-
-export const formatResponse = ({
-  chat,
-  response,
-}: {
-  chat: BaseChatModel;
-  response: string;
-}) => `\n[${chat._llmType()}]: ${response}`;

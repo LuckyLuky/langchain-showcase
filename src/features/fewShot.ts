@@ -1,45 +1,60 @@
-import { log, isVerboseMode, formatResponse } from "../utils";
+import { log, isVerboseMode } from "../utils/verboseMode";
 import {
   AIMessagePromptTemplate,
   ChatPromptTemplate,
   HumanMessagePromptTemplate,
 } from "langchain/prompts";
 import { LLMChain } from "langchain";
-import { BaseChatModel } from "langchain/chat_models";
-import { replyToMessageSystemPrompt } from "../prompts/system/replyToMessagePrompt";
+import { BaseLanguageModel } from "langchain/base_language";
+import { formatResponse } from "../utils/formatResponse";
+import { initialSystemMessagePrompt } from "../prompts/system/initialPrompt";
 
-export const run = async (chat: BaseChatModel) => {
+export const run = async (model: BaseLanguageModel) => {
   const verbose = isVerboseMode();
 
-  log("Running email response assistant");
+  log("Creating prompts");
 
-  log("Feeding few shot data");
-
-  const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    replyToMessageSystemPrompt,
+  const prompt = ChatPromptTemplate.fromPromptMessages([
+    initialSystemMessagePrompt,
     HumanMessagePromptTemplate.fromTemplate(
       "Hello! I'd like to book an apartment, would it be possible?"
     ),
     AIMessagePromptTemplate.fromTemplate(
-      "Hello dear sir! Most definitely! When would you like to use our services?"
+      "Howdy fella! You bet your horses! Looking forward to see you soon! Adios!"
     ),
-    HumanMessagePromptTemplate.fromTemplate("Wazzup! Got a room?"),
+    HumanMessagePromptTemplate.fromTemplate(
+      "Hi! We'd like to make a booking for a larger group. Is there a discount available?"
+    ),
     AIMessagePromptTemplate.fromTemplate(
-      "Hello, please show some respect. Yes, we do, when would you like to arrive?"
+      "Howdy, you must be out of your mind! No discounts, either pay, or get lost! But I sure hope you'll get your mind right and well make a deal! Yeehaw!"
     ),
-    HumanMessagePromptTemplate.fromTemplate("{text}"),
+    HumanMessagePromptTemplate.fromTemplate("{input}"),
   ]);
 
   log("Setting up LLM chain");
 
-  const chain = new LLMChain({ llm: chat, prompt: chatPrompt, verbose });
+  const chain = new LLMChain({ llm: model, prompt, verbose });
 
   log("Waiting for response");
 
-  // TODO: get input
-  const response = await chain.run(
-    "Hello, how are you? I was wondering, do you have a free from for tomorrow?"
-  );
+  // TODO: get input from the user
+  const input = `\
+Hello, how are you? I was wondering, do you have free rooms for tomorrow? There's going be a lot of us (around 15). \
+Also, is there a possibility of a discount, since we're a large group? Thanks in advance!\
+    `;
 
-  console.log(formatResponse({ chat, response }));
+  const [formattedPrompt, response] = await Promise.all([
+    prompt.formatMessages({ input }),
+    chain.run(input),
+  ]);
+
+  console.log(
+    formatResponse({
+      llm: model,
+      response,
+      prompt: formattedPrompt
+        .map((message) => `(${message._getType()}): ${message.text}`)
+        .join("\n"),
+    })
+  );
 };

@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
-import { features } from "./features";
-import { chatModels } from "./chatModels";
-import { log } from "./utils";
+import { chatFeatures, features, llmFeatures } from "./features";
+import { chatModels, llmModels, models } from "./models";
+import { log } from "./utils/verboseMode";
 
 inquirer
   .prompt([
@@ -15,15 +15,26 @@ inquirer
       name: "chatModel",
       type: "list",
       message: "Select chat model",
-      choices: () => Object.keys(chatModels),
+      choices: (answer) => {
+        const { feature } = answer;
+
+        if (Object.keys(llmFeatures).includes(feature)) {
+          return Object.keys(llmModels);
+        }
+        if (Object.keys(chatFeatures).includes(feature)) {
+          return Object.keys(chatModels);
+        }
+
+        throw new Error("Invalid input");
+      },
     },
   ])
   .then(({ feature, chatModel }) => {
-    if (!features[feature] || !chatModels[chatModel]) {
+    if (!features[feature] || !models[chatModel]) {
       throw new Error("Invalid input");
     }
 
     log(`Running ${feature} with ${chatModel}`);
 
-    return features[feature](chatModels[chatModel]());
+    return features[feature](models[chatModel]());
   });
