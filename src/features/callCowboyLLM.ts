@@ -13,10 +13,16 @@ export const run = async (llm: BaseLLM) => {
   log("Creating prompt");
 
   const prompt = ChatPromptTemplate.fromPromptMessages([
-    HumanMessagePromptTemplate.fromTemplate("{input}"),
+    initialSystemMessagePrompt,
+    HumanMessagePromptTemplate.fromTemplate(
+      'Message from the customer: "{input}"'
+    ),
   ]);
 
-  const input = getUserInput("Who are you?");
+  const input = getUserInput(`\
+Hello, how are you? I was wondering, do you have free rooms for tomorrow? There's going be a lot of us (around 15). \
+Also, is there a possibility of a discount, since we're a large group? Thanks in advance!\
+            `);
 
   log("Formatting prompt");
 

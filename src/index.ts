@@ -12,14 +12,14 @@ inquirer
       choices: () => Object.keys(features),
     },
     {
-      name: "chatModel",
+      name: "model",
       type: "list",
       message: "Select chat model",
       choices: (answers) => {
         const { feature } = answers;
 
         if (Object.keys(llmFeatures).includes(feature)) {
-          return Object.keys(models);
+          return Object.keys(llmModels);
         }
         if (Object.keys(chatFeatures).includes(feature)) {
           return Object.keys(chatModels);
@@ -43,14 +43,14 @@ inquirer
       },
     },
   ])
-  .then(({ feature, chatModel, input }) => {
-    if (!features[feature] || !models[chatModel]) {
+  .then(({ feature, model, input }) => {
+    if (!features[feature] || !models[model]) {
       throw new Error("Invalid input");
     }
 
     process.env.USER_PROMPT = input;
 
-    log(`Running ${feature} with ${chatModel}`);
+    log(`Running ${feature} with ${model}`);
 
-    return features[feature](models[chatModel]());
+    return features[feature](models[model]());
   });
