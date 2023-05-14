@@ -1,13 +1,12 @@
-import { BaseLanguageModel } from "langchain/base_language";
-import { isVerboseMode, log } from "../utils/verboseMode";
+import { log } from "../utils/verboseMode";
 import {
-  AIMessagePromptTemplate,
   ChatPromptTemplate,
   HumanMessagePromptTemplate,
 } from "langchain/prompts";
 import { formatResponse } from "../utils/formatResponse";
 import { BaseLLM } from "langchain/llms";
 import { initialSystemMessagePrompt } from "../prompts/system/initialPrompt";
+import { getUserInput } from "../prompts/user/input";
 
 export const run = async (llm: BaseLLM) => {
   log("Creating prompt");
@@ -19,9 +18,7 @@ export const run = async (llm: BaseLLM) => {
     ),
   ]);
 
-  // TODO: get input from the user
-  const input =
-    "Hello, how are you? I was wondering, do you have a free room for tomorrow?";
+  const input = getUserInput();
 
   log("Formatting prompt");
 

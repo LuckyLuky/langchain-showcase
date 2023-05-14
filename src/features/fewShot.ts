@@ -8,6 +8,7 @@ import { LLMChain } from "langchain";
 import { BaseLanguageModel } from "langchain/base_language";
 import { formatResponse } from "../utils/formatResponse";
 import { initialSystemMessagePrompt } from "../prompts/system/initialPrompt";
+import { getUserInput } from "../prompts/user/input";
 
 export const run = async (model: BaseLanguageModel) => {
   const verbose = isVerboseMode();
@@ -37,11 +38,7 @@ export const run = async (model: BaseLanguageModel) => {
 
   log("Waiting for response");
 
-  // TODO: get input from the user
-  const input = `\
-Hello, how are you? I was wondering, do you have free rooms for tomorrow? There's going be a lot of us (around 15). \
-Also, is there a possibility of a discount, since we're a large group? Thanks in advance!\
-    `;
+  const input = getUserInput();
 
   const [formattedPrompt, response] = await Promise.all([
     prompt.formatMessages({ input }),

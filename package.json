@@ -27,6 +27,7 @@
   "homepage": "https://github.com/LuckyLuky/langchain-showcase#readme",
   "dependencies": {
     "@huggingface/inference": "^1.8.0",
+    "cohere-ai": "^5.1.0",
     "inquirer": "^8.2.4",
     "langchain": "^0.0.75",
     "patch-package": "^7.0.0",
