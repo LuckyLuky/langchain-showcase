@@ -10,5 +10,6 @@ export const create = () => {
     temperature,
     verbose,
     maxTokens: 150,
+    model: "command",
   });
 };
