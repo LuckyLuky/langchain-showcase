@@ -1,6 +1,5 @@
 import { Calculator } from "langchain/tools/calculator";
 import { SerpAPI } from "langchain/tools";
-import { BufferMemory } from "langchain/memory";
 import { BaseLanguageModel } from "langchain/base_language";
 import {
   AgentExecutor,
@@ -43,9 +42,6 @@ export const run = async (model: BaseLanguageModel) => {
 
   log("Creating tools");
   const tools = [new Calculator(), new SerpAPI()];
-
-  log("Creating buffer memory");
-  const memory = new BufferMemory();
 
   log("Creating action agent executor");
   const executor = await initializeAgentExecutorWithOptions(tools, model, {
