@@ -4,6 +4,7 @@ import { run as runCallLLM } from "./callLLM";
 import { run as runPlanAndExecuteAgent } from "./agent/planAndExecuteAgent";
 import { run as runChatModelActionAgent } from "./agent/chatModelActionAgent";
 import { run as runBrowser } from "./browser";
+import { run as runSearchEngine } from "./searchEngine";
 
 export const llmFeatures = {
   callCowboyLLM: runCallCowboyLLM,
@@ -18,6 +19,7 @@ export const agentFeatures = {
 
 export const chatFeatures = {
   fewShot: runFewShot,
+  searchEngine: runSearchEngine,
   ...agentFeatures,
 };
 
