@@ -2,10 +2,41 @@ import { Calculator } from "langchain/tools/calculator";
 import { SerpAPI } from "langchain/tools";
 import { BufferMemory } from "langchain/memory";
 import { BaseLanguageModel } from "langchain/base_language";
-import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import {
+  AgentExecutor,
+  initializeAgentExecutorWithOptions,
+} from "langchain/agents";
 import { isVerboseMode, log } from "../../utils/verboseMode";
 import { formatResponse } from "../../utils/formatResponse";
 import { setLoading } from "../../utils/loadingAnimation";
+
+const runStep = async ({
+  model,
+  executor,
+  input,
+}: {
+  model: BaseLanguageModel;
+  executor: AgentExecutor;
+  input: string;
+}) => {
+  log(`Running executor for input: ${input}`);
+
+  const cancelLoading = setLoading();
+
+  const result = await executor.call({
+    input,
+  });
+
+  cancelLoading();
+
+  console.log(
+    formatResponse({
+      llm: model,
+      response: result.output,
+      prompt: input,
+    })
+  );
+};
 
 export const run = async (model: BaseLanguageModel) => {
   const verbose = isVerboseMode();
@@ -19,49 +50,22 @@ export const run = async (model: BaseLanguageModel) => {
   log("Creating action agent executor");
   const executor = await initializeAgentExecutorWithOptions(tools, model, {
     agentType: "chat-zero-shot-react-description",
+    verbose,
   });
 
-  let input = `\
+  await runStep({
+    executor,
+    model,
+    input: `\
 Who is the current president of the Czech republic?
-`;
-
-  log(`Running executor for input: ${input}`);
-
-  let cancelLoading = setLoading();
-
-  let result = await executor.call({
-    input,
+    `,
   });
 
-  cancelLoading();
-
-  console.log(
-    formatResponse({
-      llm: model,
-      response: result.output,
-      prompt: input,
-    })
-  );
-
-  input = `\
+  await runStep({
+    executor,
+    model,
+    input: `\
 What's the name of his or her spouse?
-`;
-
-  log(`Running executor for input: ${input}`);
-
-  cancelLoading = setLoading();
-
-  result = await executor.call({
-    input,
+    `,
   });
-
-  cancelLoading();
-
-  console.log(
-    formatResponse({
-      llm: model,
-      response: result.output,
-      prompt: input,
-    })
-  );
 };

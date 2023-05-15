@@ -7,6 +7,34 @@ import { isVerboseMode, log } from "../../utils/verboseMode";
 import { formatResponse } from "../../utils/formatResponse";
 import { setLoading } from "../../utils/loadingAnimation";
 
+const runStep = async ({
+  model,
+  executor,
+  input,
+}: {
+  model: BaseLanguageModel;
+  executor: PlanAndExecuteAgentExecutor;
+  input: string;
+}) => {
+  log(`Running executor for input: ${input}`);
+
+  const cancelLoading = setLoading();
+
+  const result = await executor.call({
+    input,
+  });
+
+  cancelLoading();
+
+  console.log(
+    formatResponse({
+      llm: model,
+      response: result.output,
+      prompt: input,
+    })
+  );
+};
+
 export const run = async (model: BaseLanguageModel) => {
   const verbose = isVerboseMode();
 
@@ -24,50 +52,27 @@ export const run = async (model: BaseLanguageModel) => {
     verbose,
   });
 
-  //   const input = `\
-  // Who is the current president of the Czech republic? Who's his spouse and what's their age? What is their age difference?
-  // `;
-  let input = `\
-Who is the current president of the Czech republic?
-`;
-
-  log(`Running executor for input: ${input}`);
-
-  let cancelLoading = setLoading();
-
-  let result = await executor.call({
-    input,
+  await runStep({
+    model,
+    executor,
+    input: `\
+Who is the current president of the Czech republic?\
+    `,
   });
 
-  cancelLoading();
-
-  console.log(
-    formatResponse({
-      llm: model,
-      response: result.output,
-      prompt: input,
-    })
-  );
-
-  input = `\
+  await runStep({
+    model,
+    executor,
+    input: `\
 What's the name of his or her spouse?
-`;
-
-  log(`Running executor for input: ${input}`);
-
-  cancelLoading = setLoading();
-
-  result = await executor.call({
-    input,
+    `,
   });
 
-  cancelLoading();
-
-  console.log(
-    formatResponse({
-      llm: model,
-      response: result.output,
-      prompt: input,
-    })
-  );
+  await runStep({
+    model,
+    executor,
+    input: `\
+How many years has the president left before he's eligible for a retirement?
+    `,
+  });
 };

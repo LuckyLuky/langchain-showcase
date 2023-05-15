@@ -3,10 +3,12 @@ import { run as runCallCowboyLLM } from "./callCowboyLLM";
 import { run as runCallLLM } from "./callLLM";
 import { run as runPlanAndExecuteAgent } from "./agent/planAndExecuteAgent";
 import { run as runChatModelActionAgent } from "./agent/chatModelActionAgent";
+import { run as runBrowser } from "./browser";
 
 export const llmFeatures = {
   callCowboyLLM: runCallCowboyLLM,
   callLLM: runCallLLM,
+  browser: runBrowser,
 };
 
 export const agentFeatures = {

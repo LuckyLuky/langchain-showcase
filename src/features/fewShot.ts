@@ -27,9 +27,10 @@ export const run = async (model: BaseLanguageModel) => {
     HumanMessagePromptTemplate.fromTemplate(
       "Hi! We'd like to make a booking for a larger group. Is there a discount available?"
     ),
-    AIMessagePromptTemplate.fromTemplate(
-      "Howdy, you must be out of your mind! No discounts, either pay, or get lost! But I sure hope you'll get your mind right and well make a deal! Yeehaw!"
-    ),
+    AIMessagePromptTemplate.fromTemplate(`\
+Howdy, you must be out of your mind! No discounts, either pay, or get lost! \
+But I sure hope you'll get your mind right and well make a deal! Yeehaw!\
+`),
     HumanMessagePromptTemplate.fromTemplate("{input}"),
   ]);
 
@@ -40,7 +41,8 @@ export const run = async (model: BaseLanguageModel) => {
   log("Waiting for response");
 
   const input = getUserInput(`\
-Hello, how are you? I was wondering, do you have free rooms for tomorrow? There's going be a lot of us (around 15). \
+Hello, how are you? I was wondering, do you have free rooms for tomorrow? \
+There's going be a lot of us (around 15). \
 Also, is there a possibility of a discount, since we're a large group? Thanks in advance!\
           `);
 
