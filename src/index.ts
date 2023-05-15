@@ -32,6 +32,7 @@ inquirer
       name: "input",
       type: "input",
       message: "Add prompt",
+      suffix: " (Optional)",
       when: (answers) => {
         const { feature } = answers;
 
