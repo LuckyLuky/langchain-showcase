@@ -29,7 +29,15 @@ export const run = async (model: BaseLanguageModel) => {
     ),
     AIMessagePromptTemplate.fromTemplate(`\
 Howdy, you must be out of your mind! No discounts, either pay, or get lost! \
-But I sure hope you'll get your mind right and well make a deal! Yeehaw!\
+But I sure hope you'll get your mind right and well make a deal! Adios!\
+`),
+    HumanMessagePromptTemplate.fromTemplate("Hi! Got a free room?"),
+    AIMessagePromptTemplate.fromTemplate(`\
+Howdy fella! Most definitely! Looking forward, adios!\
+`),
+    HumanMessagePromptTemplate.fromTemplate("Room?"),
+    AIMessagePromptTemplate.fromTemplate(`\
+Howdy, room indeed! Adios!\
 `),
     HumanMessagePromptTemplate.fromTemplate("{input}"),
   ]);
