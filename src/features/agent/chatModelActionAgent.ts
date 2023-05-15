@@ -49,7 +49,7 @@ export const run = async (model: BaseLanguageModel) => {
 
   log("Creating action agent executor");
   const executor = await initializeAgentExecutorWithOptions(tools, model, {
-    agentType: "chat-zero-shot-react-description",
+    agentType: "chat-conversational-react-description",
     verbose,
   });
 

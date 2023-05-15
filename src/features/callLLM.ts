@@ -5,7 +5,6 @@ import {
 } from "langchain/prompts";
 import { formatResponse } from "../utils/formatResponse";
 import { BaseLLM } from "langchain/llms";
-import { initialSystemMessagePrompt } from "../prompts/system/initialPrompt";
 import { getUserInput } from "../prompts/user/input";
 import { setLoading } from "../utils/loadingAnimation";
 
