@@ -7,6 +7,7 @@
     "postinstall": "patch-package",
     "start": "ts-node src/index.ts",
     "start:verbose": "VERBOSE=true ts-node src/index.ts",
+    "start:chatbot": "ts-node src/__chatbot.ts",
     "watch": "tsnd --respawn src/index.ts",
     "watch:verbose": "VERBOSE=true tsnd --respawn src/index.ts"
   },
