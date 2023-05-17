@@ -1,6 +1,9 @@
 import { config } from "dotenv";
 import readline from "readline";
 import { setLoading } from "./utils/loadingAnimation";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { SerpAPI } from "langchain/tools";
+import { initializeAgentExecutorWithOptions } from "langchain/agents";
 
 config();
 
@@ -16,15 +19,21 @@ run();
  * Run script
  */
 async function run() {
+  const model = new ChatOpenAI({ temperature: 0 });
+  const tools = [new SerpAPI()];
+  const executor = await initializeAgentExecutorWithOptions(tools, model, {
+    agentType: "chat-conversational-react-description",
+  });
+
   const callChatbot = async (input: string) => {
     const cancelLoading = setLoading();
 
     // TODO
-    const result = null;
+    const result = await executor.call({ input });
 
     cancelLoading();
 
-    console.log(input);
+    console.log(`\n${result.output}\n`);
     rl.prompt();
   };
 
